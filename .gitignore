@@ -1,0 +1,125 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Oo]ut/
+[Bb]uild[Ll]og/
+[Ll]oss/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.history/
+.idea/
+.ionide/
+
+# Backup & report files from converting an old project file
+Backup*/
+*ReportDisplay*
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# IIS Express SSL Certificate
+/.vs/config/applicationhost.config
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (Mono Auto Generated)
+mono_crash.*
+
+# VS Code directories
+.vscode/
+.history/
+.idea/
+.ionide/
+
+# Backup & report files from converting an old project file
+Backup*/
+*ReportDisplay*
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# IIS Express SSL Certificate
+/.vs/config/applicationhost.config
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Others
+*.sln.docstates
+*.dotsettings*
+*.dotCover
+*.dotMemory
+*.dotTrace
+*.out
+*.ipr
+*.iws
+.idea/
+.godot/
+.tsf
+.exr
+*.tmb
+*.uexp
+*.ubulk
+*.m.db
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Exclude all hidden files and directories
+.*
+
+# Include specific hidden files
+!.gitignore
+!.gitattributes
+!.editorconfig
