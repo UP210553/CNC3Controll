@@ -7,7 +7,7 @@ namespace CNC3Cont485
 			InitializeComponent();
 		}
 
-		private void tbMacros_Click(object sender, EventArgs e)
+		private void tbInicio_Click(object sender, EventArgs e)
 		{
 
 		}
