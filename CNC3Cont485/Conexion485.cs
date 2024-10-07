@@ -400,7 +400,7 @@ namespace CNC3Cont485
 			}
 		}
 
-		private ushort CrcChk(byte[] data)
+		private static ushort CrcChk(byte[] data)
 		{
 			ushort crcReg = 0xFFFF; // Paso 1: Iniciar el registro CRC con 0xFFFF
 
@@ -424,7 +424,7 @@ namespace CNC3Cont485
 			return crcReg;
 		}
 
-		static string[] GetAvailablePorts()
+		public static string[] GetAvailablePorts()
 		{
 			string[] puertosSeriales = SerialPort.GetPortNames();
 			string[] puertosDisponibles = puertosSeriales;
