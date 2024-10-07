@@ -124,7 +124,7 @@ namespace CNC3Cont485
 			}
 		}
 
-		public bool RetryUntilSuccess(Func<bool> operation)
+		public static bool RetryUntilSuccess(Func<bool> operation)
 		{
 			bool result;
 			do
