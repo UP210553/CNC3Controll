@@ -55,16 +55,16 @@ namespace CNC3Cont485
 			uint servoId;
 			switch (idServo)
 			{
-				case "1":
+				case "X":
 					servoId = 1;
 					break;
-				case "2":
+				case "Y":
 					servoId = 2;
 					break;
-				case "3":
+				case "Z":
 					servoId = 3;
 					break;
-				case "4":
+				case "A":
 					servoId = 4;
 					break;
 				default:
@@ -147,6 +147,7 @@ namespace CNC3Cont485
 			}
 
 		}
+
 
 		private bool WriteServoASCII(Int16 direccion, Int16 datos, string servoId)
 		{

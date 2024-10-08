@@ -14,16 +14,16 @@ namespace CNC3Cont485
 		{
             try
 			{
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("120", "1", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("121", "500", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("128", velocidadJog, "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "0", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("118", "0", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("69", "3840", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "1", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "2047", "1"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("120", "1", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("121", "500", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("128", velocidadJog, "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "0", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("118", "0", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("69", "3840", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "1", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "2047", "X"));
 				Thread.Sleep(150);
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "3071", "1"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "3071", "X"));
 			}
 			catch (Exception)
 			{
@@ -35,16 +35,16 @@ namespace CNC3Cont485
 		{
 			try
 			{
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("120", "-1", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("121", "-500", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("128", velocidadJog, "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "0", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("118", "0", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("69", "3840", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "1", "1"));
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "2047", "1"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("120", "-1", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("121", "-500", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("128", velocidadJog, "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "0", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("118", "0", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("69", "3840", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("117", "1", "X"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "2047", "X"));
 				Thread.Sleep(150);
-				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "3071", "1"));
+				Conexion485.RetryUntilSuccess(() => con.EscribirServo("71", "3071", "X"));
 			}
 			catch (Exception)
 			{

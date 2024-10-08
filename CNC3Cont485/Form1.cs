@@ -10,6 +10,7 @@ namespace CNC3Cont485
 		private bool cambioContenidoCeldas = false;
 		private bool jogEnable = false;
 		Conexion485 conexion = new();
+		private bool sysHomed = true;
 		public Form1()
 		{
 			InitializeComponent();
@@ -32,7 +33,23 @@ namespace CNC3Cont485
 		private void btnStartCycle_Click(object sender, EventArgs e)
 		{
 			CrearListaMovimientos();
+			CorrerRutina();
+
 		}
+		private void CorrerRutina()
+		{
+			if (sysHomed)
+			{
+				foreach (var movimiento in rutina)
+				{
+					Movimiento.EjecutarMovimiento(movimiento,conexion);
+				}
+			}
+            else
+            {
+				MessageBox.Show("El sistema no está referenciado, haga un homming antes de correr la rutina.");
+            }
+        }
 
 		private void CrearListaMovimientos()
 		{
@@ -82,7 +99,7 @@ namespace CNC3Cont485
 		{
 			cambioContenidoCeldas = true;
 		}
-		
+
 		private void btnCalcularY_Click(object sender, EventArgs e)
 		{
 			if (dgvMovimientos.SelectedCells.Count > 0)
