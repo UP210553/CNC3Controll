@@ -30,12 +30,12 @@ namespace CNC3Cont485
 				servoport.PortName = portName;
 				servoport.Open();
 				servoport.DiscardInBuffer();
-				MessageBox.Show($"Puerto {portName} abierto correctamente", "Conexión 485", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				//MessageBox.Show($"Puerto {portName} abierto correctamente", "Conexión 485", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				return true;
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Error: {ex.Message}");
+				//MessageBox.Show($"Error: {ex.Message}");
 				return false;
 
 			}
@@ -93,16 +93,16 @@ namespace CNC3Cont485
 			uint servoId;
 			switch (idServo)
 			{
-				case "1":
+				case "X":
 					servoId = 1;
 					break;
-				case "2":
+				case "Y":
 					servoId = 2;
 					break;
-				case "3":
+				case "Z":
 					servoId = 3;
 					break;
-				case "4":
+				case "A":
 					servoId = 4;
 					break;
 				default:
@@ -120,6 +120,41 @@ namespace CNC3Cont485
 			else
 			{
 				MessageBox.Show($"No se leyó el valor correctamente");
+				return false;
+			}
+		}
+
+		public bool ComprobarConexionServo(string idServo)
+		{
+
+			uint servoId;
+			switch (idServo)
+			{
+				case "X":
+					servoId = 1;
+					break;
+				case "Y":
+					servoId = 2;
+					break;
+				case "Z":
+					servoId = 3;
+					break;
+				case "A":
+					servoId = 4;
+					break;
+				default:
+					MessageBox.Show($"Error: Dirección de servo desconocida o inexistente");
+					return false;
+			}
+			//Int16? dato = Read_servo(direccion, idServo);
+			Int16? dato = ReadServoRTU(8, servoId);
+
+			if (dato >= 10)
+			{
+				return true;
+			}
+			else
+			{
 				return false;
 			}
 		}

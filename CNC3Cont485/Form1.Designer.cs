@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			tbInicio = new TabPage();
-			btnCalcularY = new Button();
 			button6 = new Button();
 			button5 = new Button();
 			btnGuardarEjemplo = new Button();
@@ -82,7 +82,6 @@
 			// tbInicio
 			// 
 			tbInicio.BackColor = SystemColors.Control;
-			tbInicio.Controls.Add(btnCalcularY);
 			tbInicio.Controls.Add(button6);
 			tbInicio.Controls.Add(button5);
 			tbInicio.Controls.Add(btnGuardarEjemplo);
@@ -105,16 +104,6 @@
 			tbInicio.Size = new Size(1762, 872);
 			tbInicio.TabIndex = 0;
 			tbInicio.Text = "Inicio";
-			// 
-			// btnCalcularY
-			// 
-			btnCalcularY.Location = new Point(320, 164);
-			btnCalcularY.Name = "btnCalcularY";
-			btnCalcularY.Size = new Size(100, 67);
-			btnCalcularY.TabIndex = 40;
-			btnCalcularY.Text = "Calcular Y doblado";
-			btnCalcularY.UseVisualStyleBackColor = true;
-			btnCalcularY.Click += btnCalcularY_Click;
 			// 
 			// button6
 			// 
@@ -162,7 +151,7 @@
 			// 
 			tipoMov.Frozen = true;
 			tipoMov.HeaderText = "Tipo de Movimiento";
-			tipoMov.Items.AddRange(new object[] { "Incremental", "Absoluto" });
+			tipoMov.Items.AddRange(new object[] { "Incremental", "Absoluto", "Doblado" });
 			tipoMov.MinimumWidth = 8;
 			tipoMov.Name = "tipoMov";
 			tipoMov.Width = 150;
@@ -199,6 +188,7 @@
 			aCoord.HeaderText = "A";
 			aCoord.MinimumWidth = 8;
 			aCoord.Name = "aCoord";
+			aCoord.Visible = false;
 			aCoord.Width = 150;
 			// 
 			// delayTime
@@ -536,8 +526,9 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1774, 1050);
 			Controls.Add(tbcntrlMenus);
+			Icon = (Icon)resources.GetObject("$this.Icon");
 			Name = "Form1";
-			Text = "Form1";
+			Text = "MAINDSTEEL Control CNC";
 			Load += Form1_Load;
 			tbInicio.ResumeLayout(false);
 			tbInicio.PerformLayout();
@@ -555,20 +546,10 @@
 
 		#endregion
 		private TabPage tbInicio;
-		private Button btnCalcularY;
 		private Button button6;
 		private Button button5;
 		private Button btnGuardarEjemplo;
 		private DataGridView dgvMovimientos;
-		private DataGridViewComboBoxColumn tipoMov;
-		private DataGridViewTextBoxColumn xCoord;
-		private DataGridViewTextBoxColumn yCoord;
-		private DataGridViewTextBoxColumn zCoord;
-		private DataGridViewTextBoxColumn aCoord;
-		private DataGridViewTextBoxColumn delayTime;
-		private DataGridViewTextBoxColumn velocidad;
-		private DataGridViewComboBoxColumn salidasId;
-		private DataGridViewComboBoxColumn entradaId;
 		private PictureBox pbZHome;
 		private PictureBox pbYHome;
 		private PictureBox pbXHome;
@@ -594,5 +575,14 @@
 		private TextBox txtY;
 		private TextBox txtZ;
 		private TabControl tbcntrlMenus;
+		private DataGridViewComboBoxColumn tipoMov;
+		private DataGridViewTextBoxColumn xCoord;
+		private DataGridViewTextBoxColumn yCoord;
+		private DataGridViewTextBoxColumn zCoord;
+		private DataGridViewTextBoxColumn aCoord;
+		private DataGridViewTextBoxColumn delayTime;
+		private DataGridViewTextBoxColumn velocidad;
+		private DataGridViewComboBoxColumn salidasId;
+		private DataGridViewComboBoxColumn entradaId;
 	}
 }
