@@ -147,16 +147,9 @@ namespace CNC3Cont485
 					return false;
 			}
 			//Int16? dato = Read_servo(direccion, idServo);
-			Int16? dato = ReadServoRTU(8, servoId);
+			bool correcto = WriteServoRTU(3,0,servoId);
 
-			if (dato >= 10)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return correcto;
 		}
 
 		public static bool RetryUntilSuccess(Func<bool> operation)
@@ -345,7 +338,7 @@ namespace CNC3Cont485
 
 		}
 
-		static byte[] DividirValores(Int16 valor)
+		private static byte[] DividirValores(Int16 valor)
 		{
 
 			// Obtener el byte bajo (low byte)
@@ -381,6 +374,7 @@ namespace CNC3Cont485
 				uint crcHigh = (crcResult >> 8) & 0xFF; //HighByte
 
 				byte[] escribirConCRC = { servoHex, 0x06, direccionHex[0], direccionHex[1], datoHex[0], datoHex[1], (byte)crcLow, (byte)crcHigh };
+				
 				servoport.Write(escribirConCRC, 0, 8);
 				servoport.DiscardInBuffer();
 				Thread.Sleep(100);

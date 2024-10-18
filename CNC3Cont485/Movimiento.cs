@@ -39,9 +39,21 @@ namespace CNC3Cont485
 			}
 			if (Tipo == "Incremental")
 			{
-				if (!double.IsNaN(X)) MoverServoIncremental(X, velocidad, "X");
-				if (!double.IsNaN(Y)) MoverServoIncremental(Y, velocidad, "Y");
-				if (!double.IsNaN(Z)) MoverServoIncremental(Z, velocidad, "Z");
+				if (!double.IsNaN(X))
+				{
+					double pulsos = X * 1388.8889;
+					MoverServoIncremental(pulsos, velocidad, "X");
+				}
+				if (!double.IsNaN(Y)) 
+				{
+					double pulsos = Y * 1000;
+					MoverServoIncremental(pulsos, velocidad, "Y");
+				}
+				if (!double.IsNaN(Z)) 
+				{
+					double pulsos = Z * 588.2353;
+					MoverServoIncremental(pulsos, velocidad, "Z");
+				} 
 			}
 			else if (Tipo == "Absoluto")
 			{
@@ -49,6 +61,7 @@ namespace CNC3Cont485
 			}
 			else if (Tipo == "Doblado")
 			{
+
 
 			}
 			else
@@ -59,19 +72,42 @@ namespace CNC3Cont485
 		}
 		private static void MoverServoIncremental(double posicion, int velocidad, string servo)
 		{
-			int highPos = (int)Math.Floor(posicion);
-			int lowPos = (highPos == posicion) ? 0 : ConvertirDecimalAEntero(posicion, highPos);
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo($"{120}", $"{highPos}", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo($"{121}", $"{lowPos}", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo($"{128}", $"{velocidad}", servo));
+			Con485 con = new();
+			int highPos = 0;
+			int lowPos = 0;
+			if (posicion > 9999)
+            {
+				highPos = (int)Math.Floor(posicion/10000);
+				lowPos = (int)Math.Floor(posicion % 10000);
+			}
+            else
+            {
+				lowPos = (int)Math.Floor(posicion);
+            }
+			if (servo == "Y")
+			{
+				con = Form1.conexion2;
+			}
+			else
+			{
+				con = Form1.conexion;
+			}
 
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("117", "0", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("118", "0", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("69", "3840", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("117", "1", servo));
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("71", "2047", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo($"{120}", $"{highPos}", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo($"{121}", $"{lowPos}", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo($"{128}", $"{velocidad}", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("117", "0", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("118", "0", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("69", "3840", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("117", "1", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("71", "2047", servo));
 			Thread.Sleep(150);
-			Con485.RetryUntilSuccess(() => Form1.conexion.EscribirServo("71", "3071", servo));
+			Con485.RetryUntilSuccess(() => con.EscribirServo("71", "3071", servo));
+
+		}
+
+		private static void RealizarDoblado()
+		{
 
 		}
 		private static int ConvertirDecimalAEntero(double pos, int highVal)
