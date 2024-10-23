@@ -75,6 +75,7 @@
 			Name = "LoadingForm";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Cargando";
+			Load += LoadingForm_Load;
 			Shown += LoadingForm_Shown;
 			((System.ComponentModel.ISupportInitialize)ptrBoxMaind).EndInit();
 			ResumeLayout(false);

@@ -50,7 +50,7 @@
 			lblX = new Label();
 			lblY = new Label();
 			grpJog = new GroupBox();
-			button4 = new Button();
+			btnStop = new Button();
 			btnStartCycle = new Button();
 			txtMostrarVelocidad = new TextBox();
 			lblMostrarVelocidad = new Label();
@@ -193,7 +193,7 @@
 			// 
 			// delayTime
 			// 
-			delayTime.HeaderText = "Delay";
+			delayTime.HeaderText = "Delay (s)";
 			delayTime.MinimumWidth = 8;
 			delayTime.Name = "delayTime";
 			delayTime.Width = 150;
@@ -289,7 +289,7 @@
 			// 
 			// grpJog
 			// 
-			grpJog.Controls.Add(button4);
+			grpJog.Controls.Add(btnStop);
 			grpJog.Controls.Add(btnStartCycle);
 			grpJog.Controls.Add(txtMostrarVelocidad);
 			grpJog.Controls.Add(lblMostrarVelocidad);
@@ -312,27 +312,30 @@
 			grpJog.TabStop = false;
 			grpJog.Text = "Jog";
 			// 
-			// button4
+			// btnStop
 			// 
-			button4.Font = new Font("Microsoft JhengHei UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			button4.Location = new Point(221, 44);
-			button4.Margin = new Padding(3, 4, 3, 4);
-			button4.Name = "button4";
-			button4.Size = new Size(130, 88);
-			button4.TabIndex = 43;
-			button4.Text = "STOP";
-			button4.UseVisualStyleBackColor = true;
+			btnStop.BackColor = Color.Red;
+			btnStop.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+			btnStop.Location = new Point(221, 44);
+			btnStop.Margin = new Padding(3, 4, 3, 4);
+			btnStop.Name = "btnStop";
+			btnStop.Size = new Size(130, 88);
+			btnStop.TabIndex = 43;
+			btnStop.Text = "STOP";
+			btnStop.UseVisualStyleBackColor = false;
+			btnStop.Click += btnStop_Click;
 			// 
 			// btnStartCycle
 			// 
-			btnStartCycle.Font = new Font("Microsoft JhengHei UI", 9F, FontStyle.Bold);
+			btnStartCycle.BackColor = Color.Lime;
+			btnStartCycle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
 			btnStartCycle.Location = new Point(17, 44);
 			btnStartCycle.Margin = new Padding(3, 4, 3, 4);
 			btnStartCycle.Name = "btnStartCycle";
 			btnStartCycle.Size = new Size(130, 88);
 			btnStartCycle.TabIndex = 42;
 			btnStartCycle.Text = "START";
-			btnStartCycle.UseVisualStyleBackColor = true;
+			btnStartCycle.UseVisualStyleBackColor = false;
 			btnStartCycle.Click += btnStartCycle_Click;
 			// 
 			// txtMostrarVelocidad
@@ -557,7 +560,7 @@
 		private Label lblX;
 		private Label lblY;
 		private GroupBox grpJog;
-		private Button button4;
+		private Button btnStop;
 		private Button btnStartCycle;
 		private TextBox txtMostrarVelocidad;
 		private Label lblMostrarVelocidad;

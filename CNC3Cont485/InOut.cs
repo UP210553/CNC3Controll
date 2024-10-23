@@ -8,27 +8,29 @@ using CON = CNC3Cont485.Form1;
 
 namespace CNC3Cont485
 {
-	public class InOut
+	public static class InOut
 	{
-		private bool WriteServoRTU(Int16 direccion, Int16 dato, uint servoId)
+		public static bool WritePIC(Int16 inOutID, bool estado)
 		{
 			try
 			{
-				byte servoHex = (byte)servoId;
-				
+				byte estadoHex = (byte)(estado ? 0x01 : 0x00);
+				byte servoHex = 0x50;
+				byte[] escribir = [servoHex, 0x04, 0x00, (byte)inOutID, estadoHex, 0x00, 0xFF, 0xFF];
 
-
-
-				byte[] escribir = { servoHex, 0x06, 0x00, 0x00, 0x00, 0x00 };
 
 				CON.conexion.servoport.Write(escribir, 0, 8);
 				CON.conexion.servoport.DiscardInBuffer();
 				Thread.Sleep(100);
 				CON.conexion.servoport.Read(escribir, 0, 8);
-				//if ((escribir[4] == datoHex[0]) && (escribirConCRC[5] == datoHex[1]))
-				return true;
-				//else
-				//	return false;
+				if ((escribir[3] == (byte)inOutID) && (escribir[4] == estadoHex) && (escribir[6] == 0x4F) && (escribir[7] == 0x4B))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -38,10 +40,35 @@ namespace CNC3Cont485
 
 
 		}
-		public static bool ExecIO(string comando)
+		private static bool ReadPIC(Int16 inOutID)
 		{
+			try
+			{
+				bool estado = false;
+				byte servoHex = 0x50;
+				byte[] leer = [servoHex, 0x07, 0x00, (byte)inOutID, 0x00, 0x00, 0xFF, 0xFF];
 
-			return true;
+				CON.conexion.servoport.Write(leer, 0, 8);
+				CON.conexion.servoport.DiscardInBuffer();
+				Thread.Sleep(100);
+				CON.conexion.servoport.Read(leer, 0, 8);
+				if ((leer[3] == (byte)inOutID) && (leer[6] == 0x4F) && (leer[7] == 0x4B))
+				{
+					estado = Convert.ToBoolean(leer[5]);
+					return estado;
+				}
+				else
+				{
+					throw new Exception("Problema de comunicación: Respuesta de PIC incorrecta");
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error: {ex.Message}");
+				return false;
+			}
+
+
 		}
 	}
 }

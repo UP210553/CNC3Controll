@@ -13,14 +13,15 @@ namespace CNC3Cont485
 		public static Conexion485 conexion2 = new();
 		private bool sysHomed = true;
 		private object dataGridView1;
+		private bool programaDetenido = true;
 
 		public Form1()
 		{
 
 			InitializeComponent();
-			
-           
-        }
+
+
+		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
@@ -50,7 +51,9 @@ namespace CNC3Cont485
 			if (dgvMovimientos.Rows.Count >= 1)
 			{
 				CrearListaMovimientos();
+				programaDetenido = false;
 				CorrerRutina();
+
 			}
 
 		}
@@ -58,10 +61,31 @@ namespace CNC3Cont485
 		{
 			if (sysHomed)
 			{
-				foreach (var movimiento in rutina)
+				while (!programaDetenido)
 				{
-					movimiento.EjecutarMovimiento();
+					foreach (var movimiento in rutina)
+					{
+						var resIn = MessageBox.Show("Espera que termine de moverse para dar ok","Seguir",MessageBoxButtons.OKCancel);
+
+                        if (resIn == DialogResult.Cancel)
+                        {
+							programaDetenido = true;
+							break;
+                        }
+                        if (!programaDetenido)
+						{
+							movimiento.EjecutarMovimiento();
+						}
+					}
+					var res = MessageBox.Show("Repetir ciclo?", "Seguir", MessageBoxButtons.OKCancel);
+
+					if (res == DialogResult.Cancel)
+					{
+						programaDetenido = true;
+						break;
+					}
 				}
+
 			}
 			else
 			{
@@ -125,10 +149,12 @@ namespace CNC3Cont485
 				if (tipoMovimiento == "Doblado")
 				{
 					dgvMovimientos.Rows[e.RowIndex].Cells[2].ReadOnly = true; // Columna Y
+					dgvMovimientos.Rows[e.RowIndex].Cells[3].ReadOnly = true; // Columna Z
 				}
 				else
 				{
-					dgvMovimientos.Rows[e.RowIndex].Cells[2].ReadOnly = false; // Habilita si no es "Doblado"
+					dgvMovimientos.Rows[e.RowIndex].Cells[2].ReadOnly = false; // Habilita Y si no es "Doblado"
+					dgvMovimientos.Rows[e.RowIndex].Cells[3].ReadOnly = false; // Habilita Z si no es "Doblado"
 				}
 			}
 			else if (e.ColumnIndex == 1 && e.RowIndex >= 0)
@@ -210,9 +236,9 @@ namespace CNC3Cont485
 			jogEnable = false;
 		}
 
-		private void button4_Click_3(object sender, EventArgs e)
+		private void btnStop_Click(object sender, EventArgs e)
 		{
-
+			programaDetenido = true;
 		}
 	}
 }

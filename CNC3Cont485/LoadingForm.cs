@@ -21,8 +21,8 @@ namespace CNC3Cont485
 		{
 			this.Refresh();
 			CargarConexiones();
-            
-			
+
+
 		}
 		public void CargarConexiones()
 		{
@@ -36,15 +36,15 @@ namespace CNC3Cont485
 				bool conexionX = false;
 				bool conexionY = false;
 				bool conexionZ = true;
-				
-                if (!abrioCon1)
-                {
+
+				if (!abrioCon1)
+				{
 					lblLoading.Text = "Intentando abrir conexión 1...";
 					this.Refresh();
 					Thread.Sleep(250);
 					abrioCon1 = Form1.conexion.AbrirConexion("com5");
-                }
-				if (!abrioCon2) 
+				}
+				if (!abrioCon2)
 				{
 					lblLoading.Text = "Intentando abrir conexión 2...";
 					this.Refresh();
@@ -112,6 +112,11 @@ namespace CNC3Cont485
 				this.Refresh();
 			}
 			this.Close();
+		}
+
+		private void LoadingForm_Load(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

@@ -161,6 +161,20 @@ namespace CNC3Cont485
 			} while (!result);
 			return result;
 		}
+		public bool ArrancarMovServo(string servo)
+		{
+			if (servo == "X")
+			{
+				return WriteServoRTU(71, 3071,1);
+			}
+			else if (servo == "Y")
+			{
+				return WriteServoRTU(71, 3071, 2);
+			}
+			return false;
+
+
+        }
 
 		public void CerrarConexion()
 		{
@@ -173,168 +187,6 @@ namespace CNC3Cont485
 			{
 				MessageBox.Show($"Error: {ex.Message}");
 			}
-
-		}
-
-
-		private bool WriteServoASCII(Int16 direccion, Int16 datos, string servoId)
-		{
-			try
-			{
-				byte[] writeservo = { 0x3a, 0x30, 0x31, 0x30, 0x36, 0x30, 0x30, 0x30, 0x38, 0x30, 0x30, 0x31, 0x30, 0x45, 0x31, 13, 10 }; //A = 41h  F = 46h
-				byte[] recived = { 0x3a, 0x30, 0x31, 0x30, 0x36, 0x30, 0x30, 0x30, 0x38, 0x30, 0x30, 0x31, 0x30, 0x45, 0x31, 13, 10 }; //A = 41h  F = 46h
-				int suma = 6;
-				char dato;
-				string strdir = direccion.ToString("X4");
-				string strdatos = datos.ToString("X4");
-
-				switch (servoId)
-				{
-					case "1":
-						writeservo[2] = 0x31;
-						suma = 6;
-						break;
-					case "2":
-						writeservo[2] = 0x32;
-						suma = 7;
-						break;
-					case "3":
-						writeservo[2] = 0x33;
-						suma = 8;
-						break;
-					case "4":
-						writeservo[2] = 0x34;
-						suma = 9;
-						break;
-					default:
-						MessageBox.Show($"Error: Dirección de servo desconocida o inexistente");
-						return false;
-				}
-
-				suma = suma + ((direccion >> 8) & 0XFF) + (direccion & 0xFF) + ((datos >> 8) & 0XFF) + (datos & 0xFF);
-				suma = (~suma) & 0xFF;
-
-				for (int i = 0; i <= 3; i++)
-				{
-					dato = Convert.ToChar(strdir.Substring(i, 1));
-					writeservo[i + 5] = Convert.ToByte(dato);
-				}
-				for (int i = 0; i <= 3; i++)
-				{
-					dato = Convert.ToChar(strdatos.Substring(i, 1));
-					writeservo[i + 9] = Convert.ToByte(dato);
-				}
-				strdir = suma.ToString("X2");
-				dato = Convert.ToChar(strdir.Substring(0, 1));
-				writeservo[13] = Convert.ToByte(dato);
-				dato = Convert.ToChar(strdir.Substring(1, 1));
-				writeservo[14] = Convert.ToByte(dato);
-				servoport.Write(writeservo, 0, 17);
-				Thread.Sleep(100);
-				servoport.Read(recived, 0, 17);
-				if ((writeservo[9] == recived[9]) & (writeservo[10] == recived[10]) & (writeservo[11] == recived[11]) & (writeservo[12] == recived[12]))
-					return true;
-				else
-					return false;
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Error: {ex.Message}");
-				return false;
-
-			}
-
-
-
-		}
-
-		private Int16 ReadServoASCII(Int16 direccion, string servoId)    //Int16
-		{
-			try
-			{
-				byte[] leerservo = { 0x3a, 0x30, 0x31, 0x30, 0x33, 0x30, 0x30, 0x30, 0x38, 0x30, 0x30, 0x30, 0x31, 0x46, 0x33, 13, 10 }; //A = 41h  F = 46h
-				Int16 txdato = 0;
-				int suma = 4;
-				int i;
-				char dato;
-				string strdir = direccion.ToString("X4");
-
-				switch (servoId)
-				{
-					case "1":
-						leerservo[2] = 0x31;
-						suma = 4;
-						break;
-					case "2":
-						leerservo[2] = 0x32;
-						suma = 5;
-						break;
-					case "3":
-						leerservo[2] = 0x33;
-						suma = 6;
-						break;
-					case "4":
-						leerservo[2] = 0x34;
-						suma = 7;
-						break;
-					default:
-						MessageBox.Show($"Error: Dirección de servo desconocida o inexistente");
-						return -1;
-				}
-
-				suma = suma + ((direccion >> 8) & 0XFF) + (direccion & 0xFF);
-				suma = (~suma) & 0xFF;
-
-				for (i = 0; i <= 3; i++)
-				{
-					dato = Convert.ToChar(strdir.Substring(i, 1));
-					leerservo[i + 5] = Convert.ToByte(dato);
-				}
-
-				strdir = suma.ToString("X2");
-				dato = Convert.ToChar(strdir.Substring(0, 1));
-				leerservo[13] = Convert.ToByte(dato);
-				dato = Convert.ToChar(strdir.Substring(1, 1));
-				leerservo[14] = Convert.ToByte(dato);
-				servoport.Write(leerservo, 0, 17);
-				//Thread.Sleep(100);
-				i = servoport.BytesToRead;
-				servoport.DiscardInBuffer();
-
-				byte[] respuestaServo = new byte[17];
-				for (int j = 0; j < leerservo.Length; j++)
-				{
-					respuestaServo[j] = leerservo[j];
-
-				}
-				Thread.Sleep(500);
-				servoport.Read(respuestaServo, 0, 17);
-
-				if ((respuestaServo[6] & 0xf) == 2)
-				{
-					dato = Convert.ToChar(respuestaServo[7]);
-					strdir = Convert.ToString(dato);
-					dato = Convert.ToChar(respuestaServo[8]);
-					strdir += Convert.ToString(dato);
-					dato = Convert.ToChar(respuestaServo[9]);
-					strdir += Convert.ToString(dato);
-					dato = Convert.ToChar(respuestaServo[10]);
-					strdir += Convert.ToString(dato);
-					txdato = Convert.ToInt16(strdir, 16);
-				}
-				else
-				{
-					txdato = 0;
-				}
-				return txdato;
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Error: {ex.Message}");
-				return -1;
-
-			}
-
 
 		}
 
@@ -386,7 +238,7 @@ namespace CNC3Cont485
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Error: {ex.Message}");
+				//MessageBox.Show($"Error: {ex.Message}");
 				return false;
 			}
 
@@ -425,7 +277,7 @@ namespace CNC3Cont485
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Error: {ex.Message}");
+				//MessageBox.Show($"Error: {ex.Message}");
 				return -1;
 			}
 		}
