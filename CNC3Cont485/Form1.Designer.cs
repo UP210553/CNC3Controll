@@ -34,15 +34,6 @@
 			button5 = new Button();
 			btnGuardarEjemplo = new Button();
 			dgvMovimientos = new DataGridView();
-			tipoMov = new DataGridViewComboBoxColumn();
-			xCoord = new DataGridViewTextBoxColumn();
-			yCoord = new DataGridViewTextBoxColumn();
-			zCoord = new DataGridViewTextBoxColumn();
-			aCoord = new DataGridViewTextBoxColumn();
-			delayTime = new DataGridViewTextBoxColumn();
-			velocidad = new DataGridViewTextBoxColumn();
-			salidasId = new DataGridViewComboBoxColumn();
-			entradaId = new DataGridViewComboBoxColumn();
 			pbZHome = new PictureBox();
 			pbYHome = new PictureBox();
 			pbXHome = new PictureBox();
@@ -68,6 +59,15 @@
 			txtY = new TextBox();
 			txtZ = new TextBox();
 			tbcntrlMenus = new TabControl();
+			tipoMov = new DataGridViewComboBoxColumn();
+			xCoord = new DataGridViewTextBoxColumn();
+			yCoord = new DataGridViewTextBoxColumn();
+			zCoord = new DataGridViewTextBoxColumn();
+			aCoord = new DataGridViewTextBoxColumn();
+			delayTime = new DataGridViewTextBoxColumn();
+			velocidad = new DataGridViewTextBoxColumn();
+			salidasId = new DataGridViewComboBoxColumn();
+			entradaId = new DataGridViewComboBoxColumn();
 			tbInicio.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)dgvMovimientos).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pbZHome).BeginInit();
@@ -146,80 +146,6 @@
 			dgvMovimientos.Size = new Size(1114, 569);
 			dgvMovimientos.TabIndex = 36;
 			dgvMovimientos.CellValueChanged += dgvMovimientos_CellValueChanged;
-			// 
-			// tipoMov
-			// 
-			tipoMov.Frozen = true;
-			tipoMov.HeaderText = "Tipo de Movimiento";
-			tipoMov.Items.AddRange(new object[] { "Incremental", "Absoluto", "Doblado" });
-			tipoMov.MinimumWidth = 8;
-			tipoMov.Name = "tipoMov";
-			tipoMov.Width = 150;
-			// 
-			// xCoord
-			// 
-			xCoord.Frozen = true;
-			xCoord.HeaderText = "X";
-			xCoord.MinimumWidth = 8;
-			xCoord.Name = "xCoord";
-			xCoord.Resizable = DataGridViewTriState.False;
-			xCoord.SortMode = DataGridViewColumnSortMode.NotSortable;
-			xCoord.Width = 150;
-			// 
-			// yCoord
-			// 
-			yCoord.Frozen = true;
-			yCoord.HeaderText = "Y";
-			yCoord.MinimumWidth = 8;
-			yCoord.Name = "yCoord";
-			yCoord.Width = 150;
-			// 
-			// zCoord
-			// 
-			zCoord.Frozen = true;
-			zCoord.HeaderText = "Z";
-			zCoord.MinimumWidth = 8;
-			zCoord.Name = "zCoord";
-			zCoord.Width = 150;
-			// 
-			// aCoord
-			// 
-			aCoord.Frozen = true;
-			aCoord.HeaderText = "A";
-			aCoord.MinimumWidth = 8;
-			aCoord.Name = "aCoord";
-			aCoord.Visible = false;
-			aCoord.Width = 150;
-			// 
-			// delayTime
-			// 
-			delayTime.HeaderText = "Delay (s)";
-			delayTime.MinimumWidth = 8;
-			delayTime.Name = "delayTime";
-			delayTime.Width = 150;
-			// 
-			// velocidad
-			// 
-			velocidad.HeaderText = "RPM";
-			velocidad.MinimumWidth = 8;
-			velocidad.Name = "velocidad";
-			velocidad.Width = 150;
-			// 
-			// salidasId
-			// 
-			salidasId.HeaderText = "Salida";
-			salidasId.Items.AddRange(new object[] { "Clamp ON", "Clamp OFF", "Chuck ON", "Chuck OFF" });
-			salidasId.MinimumWidth = 8;
-			salidasId.Name = "salidasId";
-			salidasId.Width = 150;
-			// 
-			// entradaId
-			// 
-			entradaId.HeaderText = "Entrada";
-			entradaId.Items.AddRange(new object[] { "Botón 1", "Botón 2" });
-			entradaId.MinimumWidth = 8;
-			entradaId.Name = "entradaId";
-			entradaId.Width = 150;
 			// 
 			// pbZHome
 			// 
@@ -522,6 +448,80 @@
 			tbcntrlMenus.SelectedIndex = 0;
 			tbcntrlMenus.Size = new Size(1770, 910);
 			tbcntrlMenus.TabIndex = 36;
+			// 
+			// tipoMov
+			// 
+			tipoMov.Frozen = true;
+			tipoMov.HeaderText = "Tipo de Movimiento";
+			tipoMov.Items.AddRange(new object[] { "Incremental", "Absoluto", "Doblado" });
+			tipoMov.MinimumWidth = 8;
+			tipoMov.Name = "tipoMov";
+			tipoMov.Width = 150;
+			// 
+			// xCoord
+			// 
+			xCoord.Frozen = true;
+			xCoord.HeaderText = "X (°)";
+			xCoord.MinimumWidth = 8;
+			xCoord.Name = "xCoord";
+			xCoord.Resizable = DataGridViewTriState.False;
+			xCoord.SortMode = DataGridViewColumnSortMode.NotSortable;
+			xCoord.Width = 150;
+			// 
+			// yCoord
+			// 
+			yCoord.Frozen = true;
+			yCoord.HeaderText = "Y (mm)";
+			yCoord.MinimumWidth = 8;
+			yCoord.Name = "yCoord";
+			yCoord.Width = 150;
+			// 
+			// zCoord
+			// 
+			zCoord.Frozen = true;
+			zCoord.HeaderText = "Z (°)";
+			zCoord.MinimumWidth = 8;
+			zCoord.Name = "zCoord";
+			zCoord.Width = 150;
+			// 
+			// aCoord
+			// 
+			aCoord.Frozen = true;
+			aCoord.HeaderText = "A";
+			aCoord.MinimumWidth = 8;
+			aCoord.Name = "aCoord";
+			aCoord.Visible = false;
+			aCoord.Width = 150;
+			// 
+			// delayTime
+			// 
+			delayTime.HeaderText = "Delay (ms)";
+			delayTime.MinimumWidth = 8;
+			delayTime.Name = "delayTime";
+			delayTime.Width = 150;
+			// 
+			// velocidad
+			// 
+			velocidad.HeaderText = "RPM";
+			velocidad.MinimumWidth = 8;
+			velocidad.Name = "velocidad";
+			velocidad.Width = 150;
+			// 
+			// salidasId
+			// 
+			salidasId.HeaderText = "Salida";
+			salidasId.Items.AddRange(new object[] { "Clamp ON", "Clamp OFF", "Chuck ON", "Chuck OFF" });
+			salidasId.MinimumWidth = 8;
+			salidasId.Name = "salidasId";
+			salidasId.Width = 150;
+			// 
+			// entradaId
+			// 
+			entradaId.HeaderText = "Entrada";
+			entradaId.Items.AddRange(new object[] { "Botón 1", "Botón 2" });
+			entradaId.MinimumWidth = 8;
+			entradaId.Name = "entradaId";
+			entradaId.Width = 150;
 			// 
 			// Form1
 			// 

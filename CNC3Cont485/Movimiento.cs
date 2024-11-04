@@ -35,7 +35,6 @@ namespace CNC3Cont485
 
 			if (Espera > 0)
 			{
-				Espera = Espera * 1000;
 				Thread.Sleep(Espera);
 			}
             if (Entrada != "" && Entrada != null)
@@ -183,7 +182,7 @@ namespace CNC3Cont485
 				// Realiza alguna operación de preparación
 				//Console.WriteLine("Preparando hilo 1");
 				barrier.SignalAndWait();  // Espera hasta que el otro hilo llegue
-				Con485.RetryUntilSuccess(() => con.ArrancarMovServo("X")); // Ahora comienza el movimiento del servo
+				Con485.RetryUntilSuccess(() => Form1.conexion.ArrancarMovServo("X")); // Ahora comienza el movimiento del servo
 			});
 
 			Task hilo2 = Task.Run(() =>
@@ -191,7 +190,7 @@ namespace CNC3Cont485
 				// Realiza alguna operación de preparación
 				//Console.WriteLine("Preparando hilo 2");
 				barrier.SignalAndWait();  // Espera hasta que el otro hilo llegue
-				Con485.RetryUntilSuccess(() => con.ArrancarMovServo("Y")); // Ahora comienza el movimiento del servo
+				Con485.RetryUntilSuccess(() => Form1.conexion2.ArrancarMovServo("Y")); // Ahora comienza el movimiento del servo
 			});
 
 			Task.WaitAll(hilo1, hilo2);
