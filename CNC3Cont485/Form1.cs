@@ -8,11 +8,12 @@ namespace CNC3Cont485
 		private List<Movimiento> rutina = [];
 		private int rowCountEarly = 0;
 		private bool cambioContenidoCeldas = false;
-		private bool jogEnable = false;
+		//private bool jogEnable = false;
 		public static Conexion485 conexion = new();
 		public static Conexion485 conexion2 = new();
-		private bool sysHomed = true;
-		private object dataGridView1;
+		public static Conexion485 conexionArd = new();
+		private bool sysHomed = false;
+		//private object dataGridView1;
 		private bool programaDetenido = true;
 
 		public Form1()
@@ -27,7 +28,7 @@ namespace CNC3Cont485
 		{
 			LoadingForm loadingForm = new();
 			loadingForm.ShowDialog();
-			if (!conexion.servoport.IsOpen && !conexion2.servoport.IsOpen)
+			if (!conexion.servoport.IsOpen && !conexion2.servoport.IsOpen && !conexionArd.servoport.IsOpen)
 			{
 				this.Close();
 			}
@@ -63,27 +64,43 @@ namespace CNC3Cont485
 			{
 				while (!programaDetenido)
 				{
-					foreach (var movimiento in rutina)
+					conexion.servoport.ReadTimeout = System.IO.Ports.SerialPort.InfiniteTimeout;
+					lblAvisoBoton.Visible = true;
+					bool resultbtn = InOut.ReadPIC(23);
+					conexion.servoport.ReadTimeout = 500;
+					if (resultbtn)
 					{
-						var resIn = MessageBox.Show("Espera que termine de moverse para dar ok","Seguir",MessageBoxButtons.OKCancel);
-
-                        if (resIn == DialogResult.Cancel)
-                        {
-							programaDetenido = true;
-							break;
-                        }
-                        if (!programaDetenido)
+						foreach (var movimiento in rutina)
 						{
-							movimiento.EjecutarMovimiento();
-						}
-					}
-					var res = MessageBox.Show("Repetir ciclo?", "Seguir", MessageBoxButtons.OKCancel);
+							//var resIn = MessageBox.Show("Espera que termine de moverse para dar ok", "Seguir", MessageBoxButtons.OKCancel);
 
-					if (res == DialogResult.Cancel)
-					{
-						programaDetenido = true;
-						break;
+							while (true)
+							{
+								if (InOut.ReadPIC(9))
+								{
+									programaDetenido = true;
+									break;
+								}
+							}
+							//                 if (resIn == DialogResult.Cancel)
+							//                 {
+							//programaDetenido = true;
+							//break;
+							//                 }
+							if (!programaDetenido)
+							{
+								movimiento.EjecutarMovimiento();
+							}
+						}
+						//var res = MessageBox.Show("Repetir ciclo?", "Seguir", MessageBoxButtons.OKCancel);
+
+						//if (res == DialogResult.Cancel)
+						//{
+						//	programaDetenido = true;
+						//	break;
+						//}
 					}
+
 				}
 
 			}
@@ -92,7 +109,6 @@ namespace CNC3Cont485
 				MessageBox.Show("El sistema no está referenciado, haga un homming antes de correr la rutina.");
 			}
 		}
-
 		private void CrearListaMovimientos()
 		{
 			string? tipo;
@@ -136,7 +152,6 @@ namespace CNC3Cont485
 			}
 
 		}
-
 		private void dgvMovimientos_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			cambioContenidoCeldas = true;
@@ -189,56 +204,73 @@ namespace CNC3Cont485
 			}
 		}
 
-		private async void JogXPMov()
-		{
-			await Task.Run(() =>
-			{
-				while (jogEnable)
-				{
-					JOG.JogXPlus("200");
-					// Agregar una pausa corta para evitar sobrecargar el procesador
-					Thread.Sleep(100);
-				}
-			});
-		}
-		private async void JogXMMov()
-		{
-			await Task.Run(() =>
-			{
-				while (jogEnable)
-				{
-					JOG.JogXMinus("200");
-					// Agregar una pausa corta para evitar sobrecargar el procesador
-					Thread.Sleep(100);
-				}
-			});
-		}
-
 		private void btnJogXPlus_MouseDown(object sender, MouseEventArgs e)
 		{
-			jogEnable = true;
-			JogXPMov();
+			InOut.WritePIC(3, true);
 		}
-
 		private void btnJogXPlus_MouseUp(object sender, MouseEventArgs e)
 		{
-			jogEnable = false;
+			//jogEnable = false;
+			InOut.WritePIC(3, false);
 		}
-
+		private void btnYPlus_MouseDown(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(5, true);
+		}
+		private void btnYPlus_MouseUp(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(5, false);
+		}
+		private void btnZPlus_MouseDown(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(7, true);
+		}
+		private void btnZPlus_MouseUp(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(7, false);
+		}
 		private void btnXMinus_MouseDown(object sender, MouseEventArgs e)
 		{
-			jogEnable = true;
-			JogXMMov();
+			InOut.WritePIC(4, true);
 		}
-
 		private void btnXMinus_MouseUp(object sender, MouseEventArgs e)
 		{
-			jogEnable = false;
+			InOut.WritePIC(4, false);
 		}
-
+		private void btnYMinus_MouseDown(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(6, true);
+		}
+		private void btnYMinus_MouseUp(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(6, false);
+		}
+		private void btnZMinus_MouseDown(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(8, true);
+		}
+		private void btnZMinus_MouseUp(object sender, MouseEventArgs e)
+		{
+			InOut.WritePIC(8, false);
+		}
 		private void btnStop_Click(object sender, EventArgs e)
 		{
 			programaDetenido = true;
 		}
+
+		private void btnHome_Click(object sender, EventArgs e)
+		{
+			sysHomed = InOut.WritePIC(14, true);
+			if (sysHomed)
+			{
+				MessageBox.Show("El sistema está referenciado", "HOME");
+			}
+			else
+			{
+				MessageBox.Show("El sistema no logró referenciarse intentelo nuevamente", "HOME");
+			}
+		}
+
+		
 	}
 }

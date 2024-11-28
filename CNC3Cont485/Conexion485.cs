@@ -23,7 +23,7 @@ namespace CNC3Cont485
 			servoport.ReadBufferSize = 4096;
 			servoport.WriteBufferSize = 2048;
 			servoport.StopBits = StopBits.Two;
-			servoport.ReadTimeout = 1000;
+			servoport.ReadTimeout = 500;
 
 			try
 			{

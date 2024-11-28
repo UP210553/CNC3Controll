@@ -21,8 +21,6 @@ namespace CNC3Cont485
 		{
 			this.Refresh();
 			CargarConexiones();
-
-
 		}
 		public void CargarConexiones()
 		{
@@ -30,12 +28,14 @@ namespace CNC3Cont485
 			//Thread.Sleep(6000);
 			bool abrioCon1 = false;
 			bool abrioCon2 = false;
+			bool abrioCon3 = false;
 			for (int i = 0; i < 3; i++)
 			{
 				this.Refresh();
 				bool conexionX = false;
 				bool conexionY = false;
-				bool conexionZ = true;
+				bool conexionZ = false;
+				bool conexionArduino = false;
 
 				if (!abrioCon1)
 				{
@@ -51,6 +51,13 @@ namespace CNC3Cont485
 					Thread.Sleep(250);
 					abrioCon2 = Form1.conexion2.AbrirConexion("com7");
 				}
+				if (!abrioCon3) 
+				{
+					lblLoading.Text = "Intentando abrir conexión 2...";
+					this.Refresh();
+					Thread.Sleep(250);
+					abrioCon2 = Form1.conexionArd.AbrirConexion("com8");
+				}
 				if (abrioCon1 && abrioCon2)
 				{
 					lblLoading.Text = "Comprobando conexión X";
@@ -63,7 +70,11 @@ namespace CNC3Cont485
 					Thread.Sleep(250);
 					lblLoading.Text = "Comprobando conexión Z";
 					this.Refresh();
-					//conexionZ = Form1.conexion.ComprobarConexionServo("Z");
+					conexionZ = Form1.conexion.ComprobarConexionServo("Z");
+					Thread.Sleep(250);
+					lblLoading.Text = "Comprobando conexión Arduino";
+					this.Refresh();
+					conexionArduino = InOut.ReadPIC(13);
 					Thread.Sleep(250);
 				}
 				if (conexionX && prgsbrCargaSistema.Value == 0)
@@ -90,7 +101,14 @@ namespace CNC3Cont485
 					Thread.Sleep(100);
 					//Thread.Sleep(1000);
 				}
-				if (prgsbrCargaSistema.Value == 3)
+				if (conexionArduino && prgsbrCargaSistema.Value == 3)
+				{
+					lblLoading.Text = "Conexión con Arduino comprobada";
+					prgsbrCargaSistema.Value++;
+					this.Refresh();
+					Thread.Sleep(100);
+				}
+				if (prgsbrCargaSistema.Value == 4)
 				{
 					lblLoading.Text = "Conexión completa";
 					this.Refresh();

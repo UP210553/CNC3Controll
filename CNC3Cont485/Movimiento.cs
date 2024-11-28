@@ -46,7 +46,6 @@ namespace CNC3Cont485
 			{
 				bool estado = SacarIdDeSalida(Salida);
 				InOut.WritePIC(IdSalida, estado);
-				MessageBox.Show("Esperando entrada");
 			}
 			if (Tipo == "Incremental")
 			{
