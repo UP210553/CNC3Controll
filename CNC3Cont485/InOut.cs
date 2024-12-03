@@ -40,7 +40,10 @@ namespace CNC3Cont485
 
 
 		}
-		public static bool ReadPIC(Int16 inOutID)
+		/*
+		 * EN DESUSO
+		 */
+		public static bool ReadPICDES(Int16 inOutID)
 		{
 			try
 			{
@@ -55,6 +58,43 @@ namespace CNC3Cont485
 				if ((leer[3] == (byte)inOutID) && (leer[6] == 0x4F) && (leer[7] == 0x4B))
 				{
 					estado = Convert.ToBoolean(leer[5]);
+					return estado;
+				}
+				else
+				{
+					throw new Exception("Problema de comunicación: Respuesta de PIC incorrecta");
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error: {ex.Message}");
+				return false;
+			}
+
+
+		}
+		public static bool ReadPIC(Int16 inOutID)
+		{
+			try
+			{
+				bool estado = false;
+				int servoHex = 50;
+				byte[] leer = [(byte)servoHex, 0x07, 0x00, (byte)inOutID, 0x00, 0x00, 0xFF, 0xFF];
+
+				string leerStr = BitConverter.ToString(leer).Replace("-", "");
+
+				CON.conexionArd.servoport.WriteLine(leerStr);
+				CON.conexionArd.servoport.DiscardInBuffer();
+				Thread.Sleep(100);
+				string respuesta = CON.conexionArd.servoport.ReadLine();
+				string[] bytesRes = new string[respuesta.Length / 2];
+				for (int i = 0; i < bytesRes.Length; i++)
+				{
+					bytesRes[i] = respuesta.Substring(i * 2, 2);
+				}
+				if ((bytesRes[3] == $"{(byte)inOutID}") && (bytesRes[6] == $"{0x4F}") && (bytesRes[7] == $"{0x4B}"))
+				{
+					estado = Convert.ToBoolean(bytesRes[5]);
 					return estado;
 				}
 				else
